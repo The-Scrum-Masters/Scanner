@@ -12,55 +12,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TrolleyID: "
-        android:id="@+id/TrolleyID_Label"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20dp"
-        android:gravity="center_vertical"
-        android:layout_alignBottom="@+id/TrolleyID" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/TrolleyID"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/CentreID"
-        android:hint="Hex" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Centre ID: "
-        android:id="@+id/CentreID_Label"
-        android:textSize="20dp"
-        android:gravity="center_vertical"
-        android:layout_below="@+id/TrolleyID_Label"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/CentreID"
-        android:hint="Hex"
-        android:layout_alignTop="@+id/CentreID_Label"
-        android:layout_toEndOf="@+id/CentreID_Label"
-        android:layout_marginStart="15dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Write text to NFC Tag"
-        android:id="@+id/WriteTag"
-        android:layout_below="@+id/CentreID"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="27dp"
-        android:layout_alignParentEnd="true"
-        android:onClick="WriteTag_onClick" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Writing Data: "
         android:id="@+id/DataOut_Label"
@@ -95,4 +46,34 @@
         android:layout_alignTop="@+id/DataOut_Label"
         android:layout_alignStart="@+id/CentreID"
         android:gravity="bottom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TrolleyID: "
+        android:id="@+id/TrolleyID_Label"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:layout_alignBaseline="@+id/TrolleyID"
+        android:layout_alignBottom="@+id/TrolleyID"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Write text to NFC Tag"
+        android:id="@+id/WriteTag"
+        android:layout_marginTop="19dp"
+        android:onClick="WriteTag_onClick"
+        android:layout_below="@+id/TrolleyID"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TrolleyID"
+        android:hint="TextToWrite"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/Status_Label" />
 </RelativeLayout>

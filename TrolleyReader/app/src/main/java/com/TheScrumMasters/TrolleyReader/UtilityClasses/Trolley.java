@@ -6,12 +6,10 @@ package com.TheScrumMasters.TrolleyReader.UtilityClasses;
 public class Trolley
 {
     private String TrolleyID;
-    private String ShoppingCentreID;
 
-    public Trolley(String ID, String ShoppingID)
+    public Trolley(String ID)
     {
         TrolleyID = ID;
-        ShoppingCentreID = ShoppingID;
     }
 
     public String toJSON()

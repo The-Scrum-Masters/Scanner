@@ -7,8 +7,8 @@ import android.graphics.Color;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +23,6 @@ public class TrolleyWriter extends AppCompatActivity
     private NdefMessage message = null;
 
     EditText TrolleyIDText;
-    EditText CentreIDText;
 
     TextView DataOutText;
     TextView StatusText;
@@ -36,7 +35,6 @@ public class TrolleyWriter extends AppCompatActivity
         nfcHandler = new NFCHandler(this, true);
 
         TrolleyIDText = (EditText)findViewById(R.id.TrolleyID);
-        CentreIDText = (EditText)findViewById(R.id.CentreID);
         DataOutText = (TextView)findViewById(R.id.DataOut);
         StatusText = (TextView)findViewById(R.id.Status);
     }
@@ -45,9 +43,8 @@ public class TrolleyWriter extends AppCompatActivity
     {
         //writes in UTF-8
         String trolleyID = TrolleyIDText.getText().toString();
-        String centreID = CentreIDText.getText().toString();
 
-        Trolley trolley = new Trolley(trolleyID, centreID);
+        Trolley trolley = new Trolley(trolleyID);
         DataOutText.setText(trolley.toJSON());
 
         message = nfcHandler.getNdefMessageFromText(trolley.toJSON());

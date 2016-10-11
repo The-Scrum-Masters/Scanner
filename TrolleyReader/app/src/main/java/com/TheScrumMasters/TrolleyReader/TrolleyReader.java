@@ -22,7 +22,6 @@ public class TrolleyReader extends AppCompatActivity
     private TextView Status;
     private EditText IP;
     private EditText Port;
-    private EditText Bay;
 
     private UDPMessageSender server;
 
@@ -37,7 +36,6 @@ public class TrolleyReader extends AppCompatActivity
         Status = (TextView)findViewById(R.id.Status);
         IP = ((EditText) findViewById(R.id.IPDestEditText));
         Port = ((EditText) findViewById(R.id.PortDestEditText));
-        Bay = ((EditText) findViewById(R.id.BayEditText));
 
         DataOut.setText("");
 
@@ -78,6 +76,7 @@ public class TrolleyReader extends AppCompatActivity
             DataOut.setText(nfcHandler.getTagText());
             Status.setText("Read Tag!");
             Status.setTextColor(Color.GREEN);
+            SendText();
         }
         catch (Exception e)
         {
@@ -87,15 +86,18 @@ public class TrolleyReader extends AppCompatActivity
 
     public void sendTxt_onClick(View view)
     {
+        SendText();
+    }
+
+    private void SendText() {
         String message = DataOut.getText().toString();
-        String BayString = Bay.getText().toString();
         if (message == "")
         {
             //if no nfc tag has been read
             Toast.makeText(this, "please scan an nfc tag first before sending", Toast.LENGTH_SHORT).show();
             return;
         }
-        message = "TRIO>"+BayString + "#" + message;
+        message = "trollid:" + message;
         //get network info
         String address = IP.getText().toString();
         String portText= Port.getText().toString();
@@ -113,7 +115,6 @@ public class TrolleyReader extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
 
 
 }
