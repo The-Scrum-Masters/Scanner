@@ -76,7 +76,7 @@ public class TrolleyReader extends AppCompatActivity
             DataOut.setText(nfcHandler.getTagText());
             Status.setText("Read Tag!");
             Status.setTextColor(Color.GREEN);
-            SendText();
+            SendText(DataOut.getText().toString());
         }
         catch (Exception e)
         {
@@ -86,11 +86,12 @@ public class TrolleyReader extends AppCompatActivity
 
     public void sendTxt_onClick(View view)
     {
-        SendText();
+        String message = DataOut.getText().toString();
+        SendText(message);
     }
 
-    private void SendText() {
-        String message = DataOut.getText().toString();
+    private void SendText(String message) {
+
         if (message == "")
         {
             //if no nfc tag has been read

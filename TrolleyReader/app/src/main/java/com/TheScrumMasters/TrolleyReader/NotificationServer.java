@@ -3,6 +3,7 @@ package com.TheScrumMasters.TrolleyReader;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -157,6 +158,7 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
         checkForLowBays(bay, chosenBay);
     }
 
+    @Nullable
     private Bay getBayById(int id)
     {
         for (Bay bay : bays.keySet())
