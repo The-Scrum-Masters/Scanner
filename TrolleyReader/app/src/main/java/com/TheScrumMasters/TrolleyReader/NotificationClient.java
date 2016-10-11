@@ -3,8 +3,8 @@ package com.TheScrumMasters.TrolleyReader;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +39,13 @@ public class NotificationClient extends AppCompatActivity implements ISMSHandler
 
         permissionHandler = new PermissionHandler(this);
         permissionHandler.askPermission(this, permissionHandler.getAllPermissions(), INITIAL_REQUEST_CODE);
+
+        boolean permissionGranted = permissionHandler.getIfPermissionGranted(PermissionHandler.Permissions.SENDSMS);
+        if (!permissionGranted)
+        {
+            Toast.makeText(this,"Can't continue without permissions", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override

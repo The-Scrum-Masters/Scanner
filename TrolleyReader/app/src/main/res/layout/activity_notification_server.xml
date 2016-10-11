@@ -139,7 +139,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="34dp"
-        android:text="0432475104\n0434352989"/>
+        android:text="0432475104"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -151,5 +151,40 @@
         android:layout_above="@+id/phoneNumber_EditText"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Bay0_Progress"
+        tools:text="0/0"
+        android:layout_alignBottom="@+id/Bay0_ProgressBar"
+        android:layout_alignEnd="@+id/phoneNumber_EditText"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Bay1_Progress"
+        tools:text="0/0"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:layout_alignBaseline="@+id/Bay2_Label"
+        android:layout_alignBottom="@+id/Bay2_Label"
+        android:layout_alignStart="@+id/Bay0_Progress" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Bay2_Progress"
+        tools:text="0/0"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black"
+        android:layout_alignBaseline="@+id/Bay3_Label"
+        android:layout_alignBottom="@+id/Bay3_Label"
+        android:layout_alignStart="@+id/Bay1_Progress" />
 
 </RelativeLayout>

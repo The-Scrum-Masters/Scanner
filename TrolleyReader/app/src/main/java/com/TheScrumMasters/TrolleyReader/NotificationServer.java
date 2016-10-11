@@ -2,20 +2,21 @@ package com.TheScrumMasters.TrolleyReader;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.TheScrumMasters.TrolleyReader.UtilityClasses.Bay;
 import com.TheScrumMasters.TrolleyReader.UtilityClasses.ISMSHandler;
-import com.TheScrumMasters.TrolleyReader.UtilityClasses.SMSNotification;
+import com.TheScrumMasters.TrolleyReader.UtilityClasses.PermissionHandler;
 import com.TheScrumMasters.TrolleyReader.UtilityClasses.SMSHandler;
+import com.TheScrumMasters.TrolleyReader.UtilityClasses.SMSNotification;
 
 import java.util.HashMap;
 
@@ -27,12 +28,16 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
      * This field is the percent of capacity the bays reach before alerting staff
      */
     private final int LOW_BAY = Color.YELLOW;
-    private final int NORMAL_BAY = Color.MAGENTA;
+    private final int NORMAL_BAY = Color.GREEN;
 
 
     SMSHandler smsHandler;
 
+    PermissionHandler permissionHandler;
+    final int INITIAL_REQUEST_CODE = 0;
+
     private HashMap<Bay, ProgressBar> bays;
+    private HashMap<Bay, TextView> bayTextProgress;//The text progress for bays.
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,8 +47,18 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
 
         smsHandler = new SMSHandler(this,this);
 
+        permissionHandler = new PermissionHandler(this);
+        permissionHandler.askPermission(this, permissionHandler.getAllPermissions(), INITIAL_REQUEST_CODE);
+        boolean permissionGranted = permissionHandler.getIfPermissionGranted(PermissionHandler.Permissions.SENDSMS);
+        if (!permissionGranted)
+        {
+            Toast.makeText(this,"Can't continue without permissions", Toast.LENGTH_LONG);
+            finish();
+        }
+
         bayChooser = ((Spinner) findViewById(R.id.Bay_Spinner));
 
+        //sorry this stuff is all hardcoded.
         Bay bay0 = new Bay(20,20,0.75,0);
         Bay bay1 = new Bay(20,20,0.50,1);
         Bay bay2 = new Bay(20,20,0.20,2);
@@ -52,24 +67,35 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
         ProgressBar progressBar_bay1 = ((ProgressBar) findViewById(R.id.Bay1_ProgressBar));
         ProgressBar progressBar_bay2 = ((ProgressBar) findViewById(R.id.Bay2_ProgressBar));
 
-
+        TextView bay0Text = ((TextView) findViewById(R.id.Bay0_Progress));
+        TextView bay1Text = ((TextView) findViewById(R.id.Bay1_Progress));
+        TextView bay2Text = ((TextView) findViewById(R.id.Bay2_Progress));
 
         Bay[] bayObjects = new Bay[] {bay0, bay1, bay2};
+
         ProgressBar[] baysArray = new ProgressBar[] {progressBar_bay0,progressBar_bay1,progressBar_bay2};
+        TextView[] textViews = new TextView[] {bay0Text,bay1Text,bay2Text};
+
         String[] baysStringArray = new String[] {"Bay 1", "Bay 2", "Bay 3"};
 
-        bays = new HashMap<>(baysStringArray.length);
+        bays = new HashMap<>(bayObjects.length);
+        bayTextProgress = new HashMap<>(bayObjects.length);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, baysStringArray);
         bayChooser.setAdapter(adapter);
 
         for(int i=0;i<baysArray.length;i++)
         {
-            baysArray[i].setMax(bayObjects[i].getCapacity());
-            baysArray[i].setProgress(bayObjects[i].getValue());
-            bays.put(bayObjects[i], baysArray[i]);
+            int max = bayObjects[i].getCapacity();
+            int progress = bayObjects[i].getValue();
+            baysArray[i].setMax(max);
+            baysArray[i].setProgress(progress);
 
+            bays.put(bayObjects[i], baysArray[i]);
             updateBayColours(bayObjects[i]);
+
+            bayTextProgress.put(bayObjects[i],textViews[i]);
+            updateProgressText(bayObjects[i]);
         }
 
     }
@@ -78,6 +104,13 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
         ProgressBar bar = bays.get(bay);
         int colour = bay.isLow() ? LOW_BAY : NORMAL_BAY;
         bar.setProgressTintList(ColorStateList.valueOf(colour));
+    }
+
+    private void updateProgressText(Bay bay)
+    {
+        TextView textView = bayTextProgress.get(bay);
+        String text = bay.getValue() + "/" + bay.getCapacity();
+        textView.setText(text);
     }
 
     public void addTrolley_onClick(View v)
@@ -98,6 +131,7 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
         }
         bay.setValue(newCapacity);
         progressBar_bay.setProgress(newCapacity);
+        updateProgressText(bay);
         checkForLowBays(bay, chosenBay);
     }
 
@@ -119,6 +153,7 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
         }
         bay.setValue(newCapacity);
         progressBar_bay.setProgress(newCapacity);
+        updateProgressText(bay);
         checkForLowBays(bay, chosenBay);
     }
 
@@ -145,10 +180,11 @@ public class NotificationServer extends AppCompatActivity implements ISMSHandler
             try
             {
                 final String[] staffNumbers = getStaffNumbers();
-                if (staffNumbers == null)
+                if (staffNumbers == null || staffNumbers.length == 0)
                 {
                     return;
                 }
+                smsHandler.sendMessage(staffNumbers[0], message);
 
             }
             catch (IllegalArgumentException e)

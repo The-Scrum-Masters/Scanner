@@ -4,14 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.provider.Settings;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 
 /**
  * Created by ryan on 19/09/16.
@@ -45,6 +42,7 @@ public class SMSHandler extends BroadcastReceiver
         smsManager.sendMultipartTextMessage(phoneNumber, null, splitMessage, null, null);
         System.out.println("----SMS Handler INFO-----");
         System.out.println("Phone: " + phoneNumber);
+        System.out.println("Message: " + message);
         System.out.println("Sending Message");
     }
 

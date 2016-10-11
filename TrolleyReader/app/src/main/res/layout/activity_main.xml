@@ -93,5 +93,6 @@
         android:onClick="NotificationServer_onClick"
         android:layout_below="@+id/notificationMode"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:elevation="0dp" />
 </RelativeLayout>
