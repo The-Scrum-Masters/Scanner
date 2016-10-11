@@ -2,19 +2,13 @@ package com.TheScrumMasters.TrolleyReader.UtilityClasses;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Random;
 
 /**
  * Created by ryan on 19/09/16.
@@ -53,7 +47,13 @@ public class PermissionHandler
             // Here, thisActivity is the current activity
             if (ContextCompat.checkSelfPermission(activity, permissionMap.get(permission)) != PackageManager.PERMISSION_GRANTED)
             {
+                //Permission not granted, we're gonna ask for it later
                 permissionsToRequest.add(permissionMap.get(permission));
+            }
+            else
+            {
+                //permission has been granted, set it to true in the hashMap
+                grantedPermissions.put(permission, true);
             }
         }
         if (permissionsToRequest.isEmpty())
